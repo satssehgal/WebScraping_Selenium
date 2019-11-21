@@ -1,16 +1,24 @@
+#import Libraries
 from selenium import webdriver 
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver import Chrome
 import pandas as pd
 import time
 
-path='/Users/sahityasehgal/Downloads/chromedriver'
+path={'ENTER PATH TO CHROMEDRIVER ON YOUR COMPUTER'}
+
+#Use Incognito mode when scraping
+
 chrome_options = Options()
 chrome_options.add_argument(" — incognito")
 browser = webdriver.Chrome(path, options=chrome_options)
 # pages=int(input('How Many Pages Do You Want to Scrape? '))
+
+#define number of pages to scrape and starting URL (usually page 1)
 pages=3
 url='http://books.toscrape.com/catalogue/page-1.html'
+
+#Create Function to scrape webpage
 
 def getdata(start_url,pgs):
     current=0
@@ -30,8 +38,8 @@ def getdata(start_url,pgs):
                 df=df.append(data, ignore_index=True)
         next = browser.find_elements_by_css_selector('li.next a')[0].click()
         current+=1
-        df.index += 1
+        df.index += 1 #Increments the index from 0 to 1
     return df
-output=getdata(url,pages)
+output=getdata(url,pages) 
 output.to_excel('test.xlsx')
 print(output)
